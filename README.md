@@ -1,2 +1,2 @@
-# ToyTorch
-a toy pytorch implementation
+# Lux
+an implementation of PyTorch
