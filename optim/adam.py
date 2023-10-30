@@ -1,0 +1,2 @@
+class Adam (object):
+    pass
