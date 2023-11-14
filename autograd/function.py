@@ -1,5 +1,6 @@
 from typing import Any
 
+
 class FunctionCtx(object):
     def save_for_backward(self, *tensors):
         """
@@ -17,21 +18,22 @@ class FunctionCtx(object):
         """
         self.saved_for_forward = tensors
 
+
 class FunctionMeta(type):
     """
     A Function Metaclass
     """
-    def __init__ (cls, name, bases, attrs):
+
+    def __init__(cls, name, bases, attrs):
         backward_fn = type(
-                f"{name}Backward",
-                (BackwardFunction,),
-                {"__forward_cls": cls})
+            f"{name}Backward", (BackwardFunction,), {"__forward_cls": cls}
+        )
 
         cls.__backward_cls = backward_fn
         super().__init__(names, bases, attrs)
 
-class _SingleLevelFunction(FunctionCtx, 
-        metaclass=FunctionMeta):
+
+class _SingleLevelFunction(FunctionCtx, metaclass=FunctionMeta):
     @staticmethod
     def forward(ctx: Any, *args: Any, **kwargs: Any) -> Any:
         """
@@ -40,17 +42,17 @@ class _SingleLevelFunction(FunctionCtx,
         """
 
         raise NotImplementedError(
-                "You must implement the forward function for"
-                " custom autograd.Function"
+            "You must implement the forward function for" " custom autograd.Function"
         )
 
+    @staticmethod
     def backward(ctx: Any, *grad_outputs: Any) -> Any:
         """
         This function is used for backward propogation
         """
         raise NotImplementedError(
-                "You must implement either the backward or "
-                "jvp function for your custom autograd.Function"
+            "You must implement either the backward or "
+            "jvp function for your custom autograd.Function"
         )
 
     def jvp(ctx: Any, *grad_inputs) -> Any:
@@ -65,6 +67,5 @@ class _SingleLevelFunction(FunctionCtx,
 
 
 class Function(_SingleLevelFunction):
-    def __init__ (self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         cls = self.__class__()
-
