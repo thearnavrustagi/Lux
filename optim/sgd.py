@@ -1,2 +1,2 @@
-class SGD (object):
+class SGD(object):
     pass

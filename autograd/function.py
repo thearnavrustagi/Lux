@@ -19,10 +19,11 @@ class FunctionCtx(object):
         self.saved_for_forward = tensors
 
 
+"""
 class FunctionMeta(type):
-    """
+    ""
     A Function Metaclass
-    """
+    ""
 
     def __init__(cls, name, bases, attrs):
         backward_fn = type(
@@ -31,9 +32,12 @@ class FunctionMeta(type):
 
         cls.__backward_cls = backward_fn
         super().__init__(names, bases, attrs)
+"""
 
 
-class _SingleLevelFunction(FunctionCtx, metaclass=FunctionMeta):
+class _SingleLevelFunction(
+    FunctionCtx,
+):  # metaclass=FunctionMeta):
     @staticmethod
     def forward(ctx: Any, *args: Any, **kwargs: Any) -> Any:
         """

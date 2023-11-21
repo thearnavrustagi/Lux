@@ -1,16 +1,19 @@
-from function import Function
+import numpy as np
+
+from ToyTorch.autograd.function import Function
 
 
 class Exp(Function):
     @staticmethod
-    def forward(ctx, i):
-        result = np.exp(i)
-        ctx.save_for_backward(i)
+    def forward(ctx, x):
+        y = np.exp(x)
+        ctx.save_for_backward(x)
+        return y
 
     @staticmethod
-    def backward(ctx, grad_output):
-        (result,) = ctx.saved_for_backward
-        return grad_output * result
+    def backward(ctx, y):
+        (x,) = ctx.saved_for_backward
+        return y * x
 
 
 if __name__ == "__main__":
