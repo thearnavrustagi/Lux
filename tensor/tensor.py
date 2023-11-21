@@ -3,7 +3,7 @@ from typing_extensions import Callable
 import numpy as np
 from numpy import ndarray
 
-from ToyTorch.autograd import *
+from ToyTorch import autograd
 
 
 class Tensor(ndarray):
@@ -41,7 +41,6 @@ class Tensor(ndarray):
 
         for attr in attributes:
             exec(f"self.{attr}=getattr(obj,'{attr}',None)")
-            print(exec(f"self.{attr}"))
 
     @staticmethod
     def tensor(
@@ -63,8 +62,15 @@ class Tensor(ndarray):
 
         return obj
 
+    def backward(self):
+        autograd.backward(self)
+
     def exp(self):
-        y = call_function(Exp, (self,))
+        y = autograd.call_function(autograd.Exp, (self,))
+        return y
+
+    def __mul__(self, a):
+        y = autograd.call_function(autograd.Mul, (self, a))
         return y
 
 
