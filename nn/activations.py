@@ -1,22 +1,61 @@
+import numpy as np
+
+
+class Exp(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, X):
+        return np.exp(X)
+
+
+class Reciprocal(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, X):
+        return np.reciprocal(X)
+
+
+class Tanh(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, X):
+        return np.tanh(X)
+
+
+class Log(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, X):
+        return np.log(X)
+
+
+class Geometric(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, X, a):
+        return np.power(X, a)
+
+
 class Sigmoid(object):
     def __init__(self):
         pass
 
-    def __call__(self, x):
-        return 1 / (1 + (-x).exp())
+    def __call__(self, X):
+        return 1.0 / (1.0 + np.exp(-X))
 
 
-class TanH(object):
-    def __init__(self):
-        self.__sigmoid__ = Sigmoid()
-
-    def __call__(self, x):
-        return 2 * self.__sigmoid__(2 * x) - 1
-
-
-class RelU(object):
+class ReLU(object):
     def __init__(self):
         pass
 
     def __call__(self, x):
         return x - x * (x < 0)
+
+
+if __name__ == "__main__":
+    pass
