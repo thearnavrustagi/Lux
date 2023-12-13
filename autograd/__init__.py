@@ -15,17 +15,20 @@ def call_function(function, arguments):
 
 def backward(
     tensor,
-):  # , gradient=None, retain_graph=None, create_graph=False, inputs=None):
-    gradient = 1
+    gradient=1
+):  
+    defer = True
     queue = [(tensor, 1)]
     while len(queue):
-        print(queue)
         t_queue = []
-        for in_tensor, arg in queue:
+        for in_tensor, prev_grad in queue:
             if not in_tensor.grad_fn:
+                in_tensor.grad = prev_grad
                 continue
-            out, next_tensors = in_tensor.grad_fn(arg)
-            in_tensor.grad = out
-            next_tensors = list(map(lambda x: (x, out), next_tensors))
+            grad, next_tensors = in_tensor.grad_fn(prev_grad)
+            in_tensor.grad = prev_grad
+            next_tensors = list(map(lambda x: (x, grad), next_tensors))
             t_queue += next_tensors
+            old_grad = grad
         queue = t_queue
+

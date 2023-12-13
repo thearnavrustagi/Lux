@@ -1,19 +1,9 @@
+from ToyTorch import Tensor
+
 import numpy as np
 import pandas as pd
 
-
-def batch_data(dataset, batch_size, drop_last, shuffle=False):
-    batches = []
-    index = 0
-    for i in range(len(dataset)):
-        x_val = np.squeeze(dataset[i : i + batch_size])
-        batches.append(x_val)
-    if drop_last == True and len(batches[-1]) < batch_size:
-        batches = batches[:-1]
-    print(len(batches))
-    batches = np.array(batches)
-    print(batches.shape)
-    return batches
+from math import ceil, floor
 
 
 class DataLoader:
@@ -27,15 +17,35 @@ class DataLoader:
         self.shuffle = shuffle
         self.num_workers = num_workers
         self.drop_last = drop_last
-        self.dataloader = batch_data(
-            dataset=dataset, batch_size=batch_size, shuffle=shuffle, drop_last=drop_last
-        )
+
+        self.idx = 0
+        self.dset_len = len(self.dataset)
+        self.len = self.dset_len/batch_size
+        self.len = floor(self.len) if self.drop_last else ceil(self.len)
+        self.dtype = type(self.dataset[0])
 
     def __iter__(self):
-        return iter(self.dataloader)
+        idx = self.idx
+        while True:
+            if idx == self.len: break
+            yield self[idx]
+            idx += 1
+
+    def __getitem__(self,idx):
+        if self.dtype == tuple:
+            rets = [[] for _ in range(len(self.dataset[0]))]
+            for i in range(self.batch_size):
+
+                didx = (idx*self.batch_size + i)
+                # if the dataloader reaches an immature end
+                if didx >= self.dset_len:
+                    break
+                
+                dataset_item = self.dataset[didx]
+                for i,(item,data) in enumerate(zip(rets, dataset_item)):
+                    rets[i].append(data)
+            return tuple(np.array(i) for i in rets)
 
     def __len__(self):
-        if self.drop_last:
-            return len(self.dataloader) - 1 if len(self.dataloader) > 0 else 0
-        else:
-            return len(self.dataloader)
+        return self.len
+
