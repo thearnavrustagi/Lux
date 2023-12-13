@@ -1,6 +1,14 @@
 import numpy as np
 
 
+class Add(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, X, a):
+        return X + a
+
+
 class Exp(object):
     def __init__(self):
         pass

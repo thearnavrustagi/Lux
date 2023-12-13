@@ -3,6 +3,18 @@ import numpy as np
 from ToyTorch.autograd.function import Function
 
 
+class Add(Function):
+    @staticmethod
+    def forward(ctx, x, a):
+        ctx.save_for_backward(x, a)
+        return x + a
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        x, a = ctx.saved_for_backward
+        return grad_output * 1
+
+
 class Exp(Function):
     @staticmethod
     def forward(ctx, x):
