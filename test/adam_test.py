@@ -8,9 +8,11 @@ def optimize(x_init=4.,y_init=3.):
     for _ in range(100):
         y = x**2
         y.backward()
+        print(x.grad)
         adam.step()
 
 if __name__ == "__main__":
+    optimize()
     x = ToyTorch.Tensor.tensor([1.,2.])
     b = ToyTorch.Tensor.tensor([3.,4.])
     print("Initial Values of x,b : ",x,b)
