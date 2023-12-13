@@ -20,6 +20,8 @@ class DataLoader:
     def __init__(
         self, dataset, batch_size=1, shuffle=False, num_workers=0, drop_last=False
     ):
+        if num_workers < 0:
+            raise ValueError("Num workers should be positive")
         self.dataset = dataset
         self.batch_size = batch_size
         self.shuffle = shuffle
