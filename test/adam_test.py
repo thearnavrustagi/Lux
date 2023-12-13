@@ -5,11 +5,14 @@ def optimize(x_init=4.,y_init=3.):
     x = ToyTorch.Tensor.tensor([x_init, y_init])
     res = []
     adam = optim.Adam([x], alpha=0.1)
+    vals = [x.copy()]
     for _ in range(100):
         y = x**2
         y.backward()
         print(x.grad)
         adam.step()
+        vals.append(x.copy())
+    return vals
 
 if __name__ == "__main__":
     optimize()
