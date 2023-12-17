@@ -1,10 +1,9 @@
 from torch import nn
 
-
-class CrossEntropyLoss(object):
+class MSELoss(object):
     def __init__(self):
         pass
 
     def __call__(self, y_pred, y_target):
-        loss = y_pred * (nn.softmax(y_target).log())
+        loss = (y_pred - y_target)**2
         return loss
